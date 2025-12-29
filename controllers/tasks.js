@@ -1,4 +1,5 @@
 import Task from "../models/taskModel.js";
+//מחזיר הכל
 export const GetAllTasks = async (req, res) => {
   try {
     const tasks = await Task.QueryGetAll(req);
@@ -16,7 +17,7 @@ export const GetAllTasks = async (req, res) => {
     });
   }
 };
-
+//יוצר Tasks
 export const CreateTasks = async (req, res) => {
   try {
     const { title, description, status, priority } = req.body;
@@ -32,7 +33,7 @@ export const CreateTasks = async (req, res) => {
     res.status(500).json({ rror: err.message });
   }
 };
-
+//מחזיר לפי ID
 export const GetByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -47,6 +48,8 @@ export const GetByID = async (req, res) => {
   }
 };
 
+
+//מעדכן Task
 export const UpdateTasks = async (req, res) => {
   try {
     const { id } = req.params;
@@ -69,6 +72,7 @@ export const UpdateTasks = async (req, res) => {
   }
 };
 
+//מוחק  Task
 export const DeleteTaskById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -84,3 +88,5 @@ export const DeleteTaskById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
