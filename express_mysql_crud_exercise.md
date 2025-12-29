@@ -1,4 +1,5 @@
 # תרגיל - CRUD עם MySQL למתחילים
+
 ## ניהול רשימת משימות (Tasks) עם בסיס נתונים MySQL
 
 ## מבוא
@@ -7,6 +8,7 @@
 במקום לשמור נתונים בקבצי JSON, נשתמש במסד נתונים אמיתי.
 
 **מה תלמדו:**
+
 - ✅ חיבור ל-MySQL מתוך Node.js
 - ✅ יצירת טבלאות באופן אוטומטי
 - ✅ פעולות CRUD (Create, Read, Update, Delete)
@@ -16,6 +18,7 @@
 - ✅ מבנה מודולרי עם MVC (בתרגיל מתקדם)
 
 **שני חלקים בתרגיל:**
+
 1. **חלק א'**: קובץ יחיד פשוט (למתחילים)
 2. **חלק ב'**: מבנה מודולרי (MVC - למתקדמים יותר)
 
@@ -34,6 +37,7 @@
 אם עדיין לא התקנתם MySQL, עברו למדריך [mysql-docker-guide.md](guides/hebrew/mysql-docker-guide.md) או [mysql-guide.md](guides/hebrew/mysql-guide.md)
 
 **בדיקה מהירה שהכל עובד:**
+
 ```bash
 mysql -u root -p
 # הקלידו את הסיסמה שהגדרתם
@@ -92,9 +96,9 @@ node_modules/
 צרו קובץ `server.js`:
 
 ```javascript
-import express from 'express';
-import mysql from 'mysql2/promise';
-import 'dotenv/config';
+import express from "express";
+import mysql from "mysql2/promise";
+import "dotenv/config";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -103,7 +107,6 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // TODO: כאן ניצור את החיבור למסד הנתונים
-
 
 // נתחיל את השרת
 app.listen(PORT, () => {
@@ -129,22 +132,25 @@ app.listen(PORT, () => {
 ```
 
 **רמז:** השתמשו ב-`await mysql.createConnection({...})`
-```
+
+````
 
 ### שלב 3: בדיקה ראשונה
 
 **הריצו:**
 ```bash
 npm run dev
-```
+````
 
 **אם הכל תקין תראו:**
+
 ```
 🚀 Server is running on http://localhost:3000
 ✅ מחובר למסד הנתונים בהצלחה!
 ```
 
 **⚠️ אם יש שגיאה:**
+
 - `Access denied` - סיסמה לא נכונה ב-.env
 - `Unknown database` - המסד לא קיים (ניצור אותו בשלב הבא)
 - `ECONNREFUSED` - MySQL לא פועל
@@ -190,10 +196,10 @@ async function setupDatabase() {
     //   - priority (ENUM with low, medium, high)
     //   - created_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
     //   - updated_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
-    
-    console.log('✅ Tasks table is ready');
+
+    console.log("✅ Tasks table is ready");
   } catch (err) {
-    console.error('❌ Error creating table:', err.message);
+    console.error("❌ Error creating table:", err.message);
   }
 }
 
@@ -206,6 +212,7 @@ setupDatabase();
 **הריצו מחדש את השרת (Ctrl+C ואז npm run dev)**
 
 אמורים לראות:
+
 ```
 ✅ מחובר למסד הנתונים בהצלחה!
 ✅ טבלת tasks מוכנה לשימוש
@@ -236,16 +243,16 @@ DESCRIBE tasks;
 // ===================================
 
 // 🏠 בדיקת שרת
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    message: 'שלום! ברוכים הבאים ל-API של ניהול משימות',
+    message: "שלום! ברוכים הבאים ל-API של ניהול משימות",
     endpoints: {
-      'GET /api/tasks': 'קבלת כל המשימות',
-      'GET /api/tasks/:id': 'קבלת משימה לפי ID',
-      'POST /api/tasks': 'יצירת משימה חדשה',
-      'PUT /api/tasks/:id': 'עדכון משימה',
-      'DELETE /api/tasks/:id': 'מחיקת משימה'
-    }
+      "GET /api/tasks": "קבלת כל המשימות",
+      "GET /api/tasks/:id": "קבלת משימה לפי ID",
+      "POST /api/tasks": "יצירת משימה חדשה",
+      "PUT /api/tasks/:id": "עדכון משימה",
+      "DELETE /api/tasks/:id": "מחיקת משימה",
+    },
   });
 });
 
@@ -258,25 +265,25 @@ app.get('/', (req, res) => {
 
 ```javascript
 // 📋 GET /api/tasks - Get all tasks
-app.get('/api/tasks', async (req, res) => {
+app.get("/api/tasks", async (req, res) => {
   try {
     // TODO: Write SQL query to get all tasks
     // TODO: Sort results by created_at in descending order
     // Hint: SELECT * FROM tasks ORDER BY ... DESC
-    
+
     const tasks = []; // Replace with actual query
-    
+
     res.json({
       success: true,
       count: tasks.length,
-      data: tasks
+      data: tasks,
     });
   } catch (err) {
-    console.error('שגיאה בקבלת משימות:', err);
+    console.error("שגיאה בקבלת משימות:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה בקבלת משימות',
-      error: err.message
+      message: "שגיאה בקבלת משימות",
+      error: err.message,
     });
   }
 });
@@ -288,6 +295,7 @@ app.get('/api/tasks', async (req, res) => {
 http://localhost:3000/api/tasks
 
 **תקבלו:**
+
 ```json
 {
   "success": true,
@@ -308,15 +316,15 @@ http://localhost:3000/api/tasks
 
 ```javascript
 // ➕ POST /api/tasks - Create new task
-app.post('/api/tasks', async (req, res) => {
+app.post("/api/tasks", async (req, res) => {
   try {
     const { title, description, status, priority } = req.body;
-    
+
     // Validation - ensure title exists
-    if (!title || title.trim() === '') {
+    if (!title || title.trim() === "") {
       return res.status(400).json({
         success: false,
-        message: 'Task title is required'
+        message: "Task title is required",
       });
     }
 
@@ -324,21 +332,21 @@ app.post('/api/tasks', async (req, res) => {
     // Hint: INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)
     // TODO: Use Prepared Statements with ? for values
     // TODO: Don't forget to handle null if there's no description
-    
+
     // TODO: Get the newly created task
     // Hint: Use result.insertId
 
     res.status(201).json({
       success: true,
-      message: 'המשימה נוצרה בהצלחה!',
-      data: newTask[0]
+      message: "המשימה נוצרה בהצלחה!",
+      data: newTask[0],
     });
   } catch (err) {
-    console.error('שגיאה ביצירת משימה:', err);
+    console.error("שגיאה ביצירת משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה ביצירת משימה',
-      error: err.message
+      message: "שגיאה ביצירת משימה",
+      error: err.message,
     });
   }
 });
@@ -347,10 +355,12 @@ app.post('/api/tasks', async (req, res) => {
 ### שלב 2: בדיקה עם Thunder Client / Postman
 
 **Request:**
+
 - Method: `POST`
 - URL: `http://localhost:3000/api/tasks`
 - Headers: `Content-Type: application/json`
 - Body:
+
 ```json
 {
   "title": "ללמוד MySQL",
@@ -361,6 +371,7 @@ app.post('/api/tasks', async (req, res) => {
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -406,10 +417,10 @@ app.post('/api/tasks', async (req, res) => {
 
 ```javascript
 // 🔍 GET /api/tasks/:id - Get single task
-app.get('/api/tasks/:id', async (req, res) => {
+app.get("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // TODO: Write SELECT query with WHERE
     // Hint: SELECT * FROM tasks WHERE id = ?
     // TODO: Make sure to use ? and not concatenate id directly in the query!
@@ -418,20 +429,20 @@ app.get('/api/tasks/:id', async (req, res) => {
     if (tasks.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
     res.json({
       success: true,
-      data: tasks[0]
+      data: tasks[0],
     });
   } catch (err) {
-    console.error('Error getting task:', err);
+    console.error("Error getting task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error getting task',
-      error: err.message
+      message: "Error getting task",
+      error: err.message,
     });
   }
 });
@@ -440,6 +451,7 @@ app.get('/api/tasks/:id', async (req, res) => {
 ### שלב 2: בדיקה
 
 **נסו בדפדפן:**
+
 - http://localhost:3000/api/tasks/1 - אמור להחזיר משימה
 - http://localhost:3000/api/tasks/999 - אמור להחזיר 404
 
@@ -453,31 +465,31 @@ app.get('/api/tasks/:id', async (req, res) => {
 
 ```javascript
 // ✏️ PUT /api/tasks/:id - Update task
-app.put('/api/tasks/:id', async (req, res) => {
+app.put("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, status, priority } = req.body;
 
     // TODO: Check if task exists (SELECT)
     // TODO: If not exists - return 404
-    
+
     // TODO: Write UPDATE query
     // Hint: UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?
     // TODO: If a field wasn't sent in request body - use existing value
-    
+
     // TODO: Get the updated task
 
     res.json({
       success: true,
-      message: 'המשימה עודכנה בהצלחה!',
-      data: updated[0]
+      message: "המשימה עודכנה בהצלחה!",
+      data: updated[0],
     });
   } catch (err) {
-    console.error('שגיאה בעדכון משימה:', err);
+    console.error("שגיאה בעדכון משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה בעדכון משימה',
-      error: err.message
+      message: "שגיאה בעדכון משימה",
+      error: err.message,
     });
   }
 });
@@ -486,9 +498,11 @@ app.put('/api/tasks/:id', async (req, res) => {
 ### שלב 2: בדיקה
 
 **Request:**
+
 - Method: `PUT`
 - URL: `http://localhost:3000/api/tasks/1`
 - Body:
+
 ```json
 {
   "status": "completed"
@@ -507,27 +521,27 @@ app.put('/api/tasks/:id', async (req, res) => {
 
 ```javascript
 // 🗑️ DELETE /api/tasks/:id - Delete task
-app.delete('/api/tasks/:id', async (req, res) => {
+app.delete("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     // TODO: Check if task exists (SELECT)
     // TODO: If not exists - return 404
-    
+
     // TODO: Write DELETE query
     // Hint: DELETE FROM tasks WHERE id = ?
 
     res.json({
       success: true,
-      message: 'Task deleted successfully!',
-      data: existing[0]
+      message: "Task deleted successfully!",
+      data: existing[0],
     });
   } catch (err) {
-    console.error('Error deleting task:', err);
+    console.error("Error deleting task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error deleting task',
-      error: err.message
+      message: "Error deleting task",
+      error: err.message,
     });
   }
 });
@@ -536,10 +550,12 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ### שלב 2: בדיקה
 
 **Request:**
+
 - Method: `DELETE`
 - URL: `http://localhost:3000/api/tasks/1`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -562,11 +578,13 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 **מה צריך לעשות:**
+
 1. קראו את `status` ו-`priority` מ-`req.query`
 2. בנו שאילתת SQL דינמית שמוסיפה WHERE רק לשדות שנשלחו
 3. השתמשו ב-Prepared Statements
 
 **רמזים:**
+
 - התחילו עם `WHERE 1=1` ואז הוסיפו תנאים
 - שמרו את הערכים במערך `params`
 - השתמשו ב-`if` לכל פרמטר
@@ -580,6 +598,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 **מה צריך להחזיר:**
+
 ```json
 {
   "success": true,
@@ -601,6 +620,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 **רמזים:**
+
 - `COUNT(*)` - ספירת שורות
 - `GROUP BY status` - קיבוץ לפי סטטוס
 - חשבו את אחוז ההשלמה: `(completed / total) * 100`
@@ -612,11 +632,13 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 **מה צריך לעשות:**
+
 1. חפשו משימות שהמילה מופיעה ב-`title` או ב-`description`
 2. החזירו רק משימות שמכילות את מילת החיפוש
 3. החיפוש לא רגיש לאותיות גדולות/קטנות
 
 **רמזים:**
+
 - השתמשו ב-`LIKE '%keyword%'`
 - `OR` בין title ל-description
 - אל תשכחו validation - חובה לספק מילת חיפוש!
@@ -631,10 +653,12 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ```
 
 **אפשרויות מיון:**
+
 - `sortBy`: priority, status, created_at, title
 - `order`: asc, desc
 
 **רמזים:**
+
 - בדקו שה-`sortBy` הוא אחד מהערכים המותרים (למניעת SQL Injection!)
 - השתמשו ב-`ORDER BY ${sortBy} ${order}`
 - ערך ברירת מחדל: `created_at DESC`
@@ -642,6 +666,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
 ### תרגיל 5: הוספת Due Date
 
 1. הוסיפו עמודה `due_date` לטבלה:
+
 ```sql
 ALTER TABLE tasks ADD COLUMN due_date DATE;
 ```
@@ -649,11 +674,13 @@ ALTER TABLE tasks ADD COLUMN due_date DATE;
 2. עדכנו את POST ו-PUT לקבל תאריך יעד
 
 3. צרו route שמחזיר רק משימות שפג תוקפן:
+
 ```javascript
 // GET /api/tasks/overdue
 ```
 
 **רמזים:**
+
 - `WHERE due_date < CURDATE()`
 - `AND status != 'completed'`
 - ודאו שהתאריך בפורמט YYYY-MM-DD
@@ -667,6 +694,7 @@ ALTER TABLE tasks ADD COLUMN due_date DATE;
 ```
 
 **מה צריך להחזיר:**
+
 ```json
 {
   "success": true,
@@ -681,6 +709,7 @@ ALTER TABLE tasks ADD COLUMN due_date DATE;
 ```
 
 **רמזים:**
+
 - `LIMIT 10 OFFSET 0` - עמוד 1
 - `LIMIT 10 OFFSET 10` - עמוד 2
 - `offset = (page - 1) * limit`
@@ -700,25 +729,26 @@ ALTER TABLE tasks ADD COLUMN due_date DATE;
 ```
 
 **רמז:**
+
 ```javascript
-app.get('/api/tasks', async (req, res) => {
+app.get("/api/tasks", async (req, res) => {
   const { status, priority } = req.query;
-  
-  let query = 'SELECT * FROM tasks WHERE 1=1';
+
+  let query = "SELECT * FROM tasks WHERE 1=1";
   const params = [];
-  
+
   if (status) {
-    query += ' AND status = ?';
+    query += " AND status = ?";
     params.push(status);
   }
-  
+
   if (priority) {
-    query += ' AND priority = ?';
+    query += " AND priority = ?";
     params.push(priority);
   }
-  
-  query += ' ORDER BY created_at DESC';
-  
+
+  query += " ORDER BY created_at DESC";
+
   const [tasks] = await connection.query(query, params);
   // ...
 });
@@ -730,13 +760,15 @@ app.get('/api/tasks', async (req, res) => {
 
 ```javascript
 // GET /api/stats
-app.get('/api/stats', async (req, res) => {
+app.get("/api/stats", async (req, res) => {
   try {
     // TODO: כמה משימות יש סה"כ?
     // TODO: כמה completed, כמה pending, כמה in_progress?
     // TODO: מה האחוז של השלמה?
-    
-    const [totalResult] = await connection.query('SELECT COUNT(*) as total FROM tasks');
+
+    const [totalResult] = await connection.query(
+      "SELECT COUNT(*) as total FROM tasks"
+    );
     const [statusCounts] = await connection.query(`
       SELECT 
         status,
@@ -744,14 +776,14 @@ app.get('/api/stats', async (req, res) => {
       FROM tasks
       GROUP BY status
     `);
-    
+
     res.json({
       success: true,
       stats: {
         total: totalResult[0].total,
-        byStatus: statusCounts
+        byStatus: statusCounts,
         // הוסיפו עוד...
-      }
+      },
     });
   } catch (err) {
     // ...
@@ -763,28 +795,28 @@ app.get('/api/stats', async (req, res) => {
 
 ```javascript
 // GET /api/tasks/search?q=mysql
-app.get('/api/tasks/search', async (req, res) => {
+app.get("/api/tasks/search", async (req, res) => {
   const { q } = req.query;
-  
+
   if (!q) {
     return res.status(400).json({
       success: false,
-      message: 'חובה לספק מילת חיפוש'
+      message: "חובה לספק מילת חיפוש",
     });
   }
 
   try {
     // TODO: חפשו משימות שבכותרת או בתיאור יש את מילת החיפוש
     const [results] = await connection.query(
-      'SELECT * FROM tasks WHERE title LIKE ? OR description LIKE ?',
+      "SELECT * FROM tasks WHERE title LIKE ? OR description LIKE ?",
       [`%${q}%`, `%${q}%`]
     );
-    
+
     res.json({
       success: true,
       query: q,
       count: results.length,
-      data: results
+      data: results,
     });
   } catch (err) {
     // ...
@@ -826,14 +858,16 @@ const [overdue] = await connection.query(
 ### 1. תמיד השתמשו ב-Prepared Statements
 
 **❌ לא טוב (SQL Injection!):**
+
 ```javascript
 const query = `SELECT * FROM tasks WHERE id = ${id}`;
 await connection.query(query);
 ```
 
 **✅ טוב:**
+
 ```javascript
-await connection.query('SELECT * FROM tasks WHERE id = ?', [id]);
+await connection.query("SELECT * FROM tasks WHERE id = ?", [id]);
 ```
 
 ### 2. טיפול בשגיאות
@@ -844,11 +878,11 @@ await connection.query('SELECT * FROM tasks WHERE id = ?', [id]);
 try {
   // ...
 } catch (err) {
-  console.error('פירוט השגיאה:', err);
+  console.error("פירוט השגיאה:", err);
   res.status(500).json({
     success: false,
-    message: 'הודעה ידידותית למשתמש',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: "הודעה ידידותית למשתמש",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 }
 ```
@@ -862,19 +896,20 @@ npm install joi
 ```
 
 ```javascript
-import Joi from 'joi';
+import Joi from "joi";
 
 const taskSchema = Joi.object({
   title: Joi.string().min(3).max(200).required(),
-  description: Joi.string().allow('').optional(),
-  status: Joi.string().valid('pending', 'in_progress', 'completed'),
-  priority: Joi.string().valid('low', 'medium', 'high')
+  description: Joi.string().allow("").optional(),
+  status: Joi.string().valid("pending", "in_progress", "completed"),
+  priority: Joi.string().valid("low", "medium", "high"),
 });
 ```
 
 ### 4. ניהול החיבור למסד הנתונים
 
 החיבור שיצרנו נשאר פתוח לאורך כל חיי השרת:
+
 - לא צריך לפתוח ולסגור חיבור בכל פעם
 - השרת יסגור את החיבור כשהוא נכבה (בזכות ה-SIGINT handler)
 - אם רוצים חיבור יותר מתקדם עם מספר חיבורים במקביל - כדאי להשתמש ב-`createPool`
@@ -900,6 +935,7 @@ PORT=3000
 בחלק זה נבנה את אותה אפליקציה אבל עם ארכיטקטורה מודולרית - **MVC (Model-View-Controller)**
 
 **למה מודולרי?**
+
 - 📁 קוד מאורגן יותר וקל לתחזוקה
 - 🔄 קל לעשות שינויים בלי לשבור דברים
 - 👥 עבודה בצוות יותר קלה
@@ -938,6 +974,7 @@ npm install -D nodemon
 ```
 
 **הוסיפו ל-package.json:**
+
 ```json
 {
   "type": "module",
@@ -951,8 +988,8 @@ npm install -D nodemon
 ### שלב 2: config/db.js - חיבור למסד נתונים
 
 ```javascript
-import mysql from 'mysql2/promise';
-import 'dotenv/config';
+import mysql from "mysql2/promise";
+import "dotenv/config";
 
 // TODO: יצרו חיבור למסד הנתונים
 // TODO: הוסיפו פונקציה setupDatabase שיוצרת את טבלת tasks
@@ -961,6 +998,7 @@ import 'dotenv/config';
 ```
 
 **רמזים:**
+
 - השתמשו ב-`createConnection`
 - וודאו שהחיבור עובד
 - יצרו את הטבלה כמו בחלק א'
@@ -968,7 +1006,7 @@ import 'dotenv/config';
 ### שלב 3: models/taskModel.js - שכבת הנתונים
 
 ```javascript
-import connection from '../config/db.js';
+import connection from "../config/db.js";
 
 // TODO: יצרו פונקציה getAll() שמחזירה את כל המשימות
 // TODO: יצרו פונקציה getById(id) שמחזירה משימה לפי ID
@@ -983,6 +1021,7 @@ export default {
 ```
 
 **רמז למבנה:**
+
 ```javascript
 const getAll = async () => {
   // TODO: כתבו את השאילתה
@@ -993,7 +1032,7 @@ const getAll = async () => {
 ### שלב 4: controllers/taskController.js - לוגיקה עסקית
 
 ```javascript
-import Task from '../models/taskModel.js';
+import Task from "../models/taskModel.js";
 
 // TODO: כתבו פונקציה getAllTasks שמקבלת req, res
 // TODO: כתבו פונקציה getTaskById שמקבלת req, res
@@ -1002,12 +1041,12 @@ import Task from '../models/taskModel.js';
 // TODO: כתבו פונקציה deleteTask שמקבלת req, res
 
 // ייצאו את כל הפונקציות
-export {
-  // הוסיפו כאן
-};
+export // הוסיפו כאן
+ {};
 ```
 
 **רמז למבנה:**
+
 ```javascript
 export const getAllTasks = async (req, res) => {
   try {
@@ -1015,7 +1054,7 @@ export const getAllTasks = async (req, res) => {
     res.json({
       success: true,
       count: tasks.length,
-      data: tasks
+      data: tasks,
     });
   } catch (err) {
     // טיפול בשגיאות
@@ -1026,14 +1065,14 @@ export const getAllTasks = async (req, res) => {
 ### שלב 5: routes/taskRoutes.js - הגדרת Routes
 
 ```javascript
-import express from 'express';
+import express from "express";
 import {
   getAllTasks,
   getTaskById,
   createTask,
   updateTask,
-  deleteTask
-} from '../controllers/taskController.js';
+  deleteTask,
+} from "../controllers/taskController.js";
 
 const router = express.Router();
 
@@ -1048,9 +1087,10 @@ export default router;
 ```
 
 **רמז:**
+
 ```javascript
-router.get('/', getAllTasks);
-router.get('/:id', getTaskById);
+router.get("/", getAllTasks);
+router.get("/:id", getTaskById);
 // המשיכו...
 ```
 
@@ -1071,10 +1111,10 @@ export const errorHandler = (err, req, res, next) => {
 ### שלב 7: server.js - נקודת הכניסה
 
 ```javascript
-import express from 'express';
-import taskRoutes from './routes/taskRoutes.js';
-import { errorHandler, notFound } from './middleware/errorHandler.js';
-import './config/db.js'; // טעינת החיבור למסד נתונים
+import express from "express";
+import taskRoutes from "./routes/taskRoutes.js";
+import { errorHandler, notFound } from "./middleware/errorHandler.js";
+import "./config/db.js"; // טעינת החיבור למסד נתונים
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1083,17 +1123,17 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Welcome Route
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    message: 'Welcome to Modular Tasks API',
-    version: '2.0.0',
-    architecture: 'MVC Pattern',
-    endpoints: '/api/tasks'
+    message: "Welcome to Modular Tasks API",
+    version: "2.0.0",
+    architecture: "MVC Pattern",
+    endpoints: "/api/tasks",
   });
 });
 
 // Routes
-app.use('/api/tasks', taskRoutes);
+app.use("/api/tasks", taskRoutes);
 
 // Error handling
 app.use(notFound);
@@ -1114,6 +1154,7 @@ npm run dev
 ```
 
 **נסו:**
+
 - `GET http://localhost:3000/api/tasks`
 - `POST http://localhost:3000/api/tasks` - body: `{"title": "Test", "priority": "high"}`
 - `GET http://localhost:3000/api/tasks/1`
@@ -1133,18 +1174,21 @@ npm run dev
 ## סיכום
 
 **במה עבדתם בחלק א':**
+
 - ✅ יצירת חיבור ל-MySQL עם createConnection
 - ✅ יצירת טבלאות אוטומטית בהפעלה
 - ✅ פעולות CRUD מלאות בקובץ יחיד
 - ✅ שאילתות SQL מאובטחות עם Prepared Statements
 
 **במה עבדתם בחלק ב':**
+
 - ✅ ארכיטקטורה מודולרית (MVC)
 - ✅ הפרדת אחריות (Separation of Concerns)
 - ✅ קוד מאורגן ונקי
 - ✅ מבנה מקצועי לפרויקטים גדולים
 
 **מה הבא?**
+
 - 📚 למדו על Relationships (טבלאות מקושרות)
 - 🔐 הוסיפו Authentication (JWT)
 - 🧪 כתבו בדיקות אוטומטיות
@@ -1161,9 +1205,9 @@ npm run dev
 ### חלק א': קובץ יחיד - server.js
 
 ```javascript
-import express from 'express';
-import mysql from 'mysql2/promise';
-import 'dotenv/config';
+import express from "express";
+import mysql from "mysql2/promise";
+import "dotenv/config";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -1180,15 +1224,15 @@ const connection = await mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306
+  port: process.env.DB_PORT || 3306,
 });
 
-console.log('✅ Connected to database successfully!');
+console.log("✅ Connected to database successfully!");
 
 // Handle connection cleanup on server shutdown
-process.on('SIGINT', async () => {
+process.on("SIGINT", async () => {
   await connection.end();
-  console.log('🔌 Database connection closed');
+  console.log("🔌 Database connection closed");
   process.exit(0);
 });
 
@@ -1209,9 +1253,9 @@ async function setupDatabase() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Tasks table is ready');
+    console.log("✅ Tasks table is ready");
   } catch (err) {
-    console.error('❌ Error creating table:', err.message);
+    console.error("❌ Error creating table:", err.message);
   }
 }
 
@@ -1222,186 +1266,187 @@ setupDatabase();
 // ===================================
 
 // 🏠 בדיקת שרת
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    message: 'שלום! ברוכים הבאים ל-API של ניהול משימות',
+    message: "שלום! ברוכים הבאים ל-API של ניהול משימות",
     endpoints: {
-      'GET /api/tasks': 'קבלת כל המשימות',
-      'GET /api/tasks/:id': 'קבלת משימה לפי ID',
-      'POST /api/tasks': 'יצירת משימה חדשה',
-      'PUT /api/tasks/:id': 'עדכון משימה',
-      'DELETE /api/tasks/:id': 'מחיקת משימה'
-    }
+      "GET /api/tasks": "קבלת כל המשימות",
+      "GET /api/tasks/:id": "קבלת משימה לפי ID",
+      "POST /api/tasks": "יצירת משימה חדשה",
+      "PUT /api/tasks/:id": "עדכון משימה",
+      "DELETE /api/tasks/:id": "מחיקת משימה",
+    },
   });
 });
 
 // 📋 GET /api/tasks - Get all tasks
-app.get('/api/tasks', async (req, res) => {
+app.get("/api/tasks", async (req, res) => {
   try {
-    const [tasks] = await connection.query('SELECT * FROM tasks ORDER BY created_at DESC');
-    
+    const [tasks] = await connection.query(
+      "SELECT * FROM tasks ORDER BY created_at DESC"
+    );
+
     res.json({
       success: true,
       count: tasks.length,
-      data: tasks
+      data: tasks,
     });
   } catch (err) {
-    console.error('שגיאה בקבלת משימות:', err);
+    console.error("שגיאה בקבלת משימות:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה בקבלת משימות',
-      error: err.message
+      message: "שגיאה בקבלת משימות",
+      error: err.message,
     });
   }
 });
 
 // ➕ POST /api/tasks - Create new task
-app.post('/api/tasks', async (req, res) => {
+app.post("/api/tasks", async (req, res) => {
   try {
     const { title, description, status, priority } = req.body;
-    
-    if (!title || title.trim() === '') {
+
+    if (!title || title.trim() === "") {
       return res.status(400).json({
         success: false,
-        message: 'Task title is required'
+        message: "Task title is required",
       });
     }
 
     const [result] = await connection.query(
-      'INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)',
-      [title, description || null, status || 'pending', priority || 'medium']
+      "INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)",
+      [title, description || null, status || "pending", priority || "medium"]
     );
 
     const [newTask] = await connection.query(
-      'SELECT * FROM tasks WHERE id = ?',
+      "SELECT * FROM tasks WHERE id = ?",
       [result.insertId]
     );
 
     res.status(201).json({
       success: true,
-      message: 'המשימה נוצרה בהצלחה!',
-      data: newTask[0]
+      message: "המשימה נוצרה בהצלחה!",
+      data: newTask[0],
     });
   } catch (err) {
-    console.error('שגיאה ביצירת משימה:', err);
+    console.error("שגיאה ביצירת משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה ביצירת משימה',
-      error: err.message
+      message: "שגיאה ביצירת משימה",
+      error: err.message,
     });
   }
 });
 
 // 🔍 GET /api/tasks/:id - Get single task
-app.get('/api/tasks/:id', async (req, res) => {
+app.get("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    
-    const [tasks] = await connection.query(
-      'SELECT * FROM tasks WHERE id = ?',
-      [id]
-    );
+
+    const [tasks] = await connection.query("SELECT * FROM tasks WHERE id = ?", [
+      id,
+    ]);
 
     if (tasks.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
     res.json({
       success: true,
-      data: tasks[0]
+      data: tasks[0],
     });
   } catch (err) {
-    console.error('שגיאה בקבלת משימה:', err);
+    console.error("שגיאה בקבלת משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה בקבלת משימה',
-      error: err.message
+      message: "שגיאה בקבלת משימה",
+      error: err.message,
     });
   }
 });
 
 // ✏️ PUT /api/tasks/:id - Update task
-app.put('/api/tasks/:id', async (req, res) => {
+app.put("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, status, priority } = req.body;
 
     const [existing] = await connection.query(
-      'SELECT * FROM tasks WHERE id = ?',
+      "SELECT * FROM tasks WHERE id = ?",
       [id]
     );
 
     if (existing.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
     await connection.query(
-      'UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?',
+      "UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?",
       [
         title || existing[0].title,
         description !== undefined ? description : existing[0].description,
         status || existing[0].status,
         priority || existing[0].priority,
-        id
+        id,
       ]
     );
 
     const [updated] = await connection.query(
-      'SELECT * FROM tasks WHERE id = ?',
+      "SELECT * FROM tasks WHERE id = ?",
       [id]
     );
 
     res.json({
       success: true,
-      message: 'המשימה עודכנה בהצלחה!',
-      data: updated[0]
+      message: "המשימה עודכנה בהצלחה!",
+      data: updated[0],
     });
   } catch (err) {
-    console.error('שגיאה בעדכון משימה:', err);
+    console.error("שגיאה בעדכון משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה בעדכון משימה',
-      error: err.message
+      message: "שגיאה בעדכון משימה",
+      error: err.message,
     });
   }
 });
 
 // 🗑️ DELETE /api/tasks/:id - Delete task
-app.delete('/api/tasks/:id', async (req, res) => {
+app.delete("/api/tasks/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const [existing] = await connection.query(
-      'SELECT * FROM tasks WHERE id = ?',
+      "SELECT * FROM tasks WHERE id = ?",
       [id]
     );
 
     if (existing.length === 0) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
-    await connection.query('DELETE FROM tasks WHERE id = ?', [id]);
+    await connection.query("DELETE FROM tasks WHERE id = ?", [id]);
 
     res.json({
       success: true,
-      message: 'המשימה נמחקה בהצלחה!',
-      data: existing[0]
+      message: "המשימה נמחקה בהצלחה!",
+      data: existing[0],
     });
   } catch (err) {
-    console.error('שגיאה במחיקת משימה:', err);
+    console.error("שגיאה במחיקת משימה:", err);
     res.status(500).json({
       success: false,
-      message: 'שגיאה במחיקת משימה',
-      error: err.message
+      message: "שגיאה במחיקת משימה",
+      error: err.message,
     });
   }
 });
@@ -1414,23 +1459,24 @@ app.listen(PORT, () => {
 ### חלק ב': מבנה מודולרי
 
 #### config/db.js
+
 ```javascript
-import mysql from 'mysql2/promise';
-import 'dotenv/config';
+import mysql from "mysql2/promise";
+import "dotenv/config";
 
 const connection = await mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306
+  port: process.env.DB_PORT || 3306,
 });
 
-console.log('✅ Connected to database successfully!');
+console.log("✅ Connected to database successfully!");
 
-process.on('SIGINT', async () => {
+process.on("SIGINT", async () => {
   await connection.end();
-  console.log('🔌 Database connection closed');
+  console.log("🔌 Database connection closed");
   process.exit(0);
 });
 
@@ -1447,9 +1493,9 @@ async function setupDatabase() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Tasks table is ready');
+    console.log("✅ Tasks table is ready");
   } catch (err) {
-    console.error('❌ Error creating table:', err.message);
+    console.error("❌ Error creating table:", err.message);
   }
 }
 
@@ -1459,24 +1505,29 @@ export default connection;
 ```
 
 #### models/taskModel.js
+
 ```javascript
-import connection from '../config/db.js';
+import connection from "../config/db.js";
 
 const getAll = async () => {
-  const [tasks] = await connection.query('SELECT * FROM tasks ORDER BY created_at DESC');
+  const [tasks] = await connection.query(
+    "SELECT * FROM tasks ORDER BY created_at DESC"
+  );
   return tasks;
 };
 
 const getById = async (id) => {
-  const [tasks] = await connection.query('SELECT * FROM tasks WHERE id = ?', [id]);
+  const [tasks] = await connection.query("SELECT * FROM tasks WHERE id = ?", [
+    id,
+  ]);
   return tasks[0];
 };
 
 const create = async (taskData) => {
   const { title, description, status, priority } = taskData;
   const [result] = await connection.query(
-    'INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)',
-    [title, description || null, status || 'pending', priority || 'medium']
+    "INSERT INTO tasks (title, description, status, priority) VALUES (?, ?, ?, ?)",
+    [title, description || null, status || "pending", priority || "medium"]
   );
   return result.insertId;
 };
@@ -1484,17 +1535,17 @@ const create = async (taskData) => {
 const update = async (id, taskData) => {
   const { title, description, status, priority } = taskData;
   const existing = await getById(id);
-  
+
   if (!existing) return false;
-  
+
   await connection.query(
-    'UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?',
+    "UPDATE tasks SET title = ?, description = ?, status = ?, priority = ? WHERE id = ?",
     [
       title || existing.title,
       description !== undefined ? description : existing.description,
       status || existing.status,
       priority || existing.priority,
-      id
+      id,
     ]
   );
   return true;
@@ -1503,8 +1554,8 @@ const update = async (id, taskData) => {
 const remove = async (id) => {
   const existing = await getById(id);
   if (!existing) return null;
-  
-  await connection.query('DELETE FROM tasks WHERE id = ?', [id]);
+
+  await connection.query("DELETE FROM tasks WHERE id = ?", [id]);
   return existing;
 };
 
@@ -1513,13 +1564,14 @@ export default {
   getById,
   create,
   update,
-  remove
+  remove,
 };
 ```
 
 #### controllers/taskController.js
+
 ```javascript
-import Task from '../models/taskModel.js';
+import Task from "../models/taskModel.js";
 
 export const getAllTasks = async (req, res) => {
   try {
@@ -1527,14 +1579,14 @@ export const getAllTasks = async (req, res) => {
     res.json({
       success: true,
       count: tasks.length,
-      data: tasks
+      data: tasks,
     });
   } catch (err) {
-    console.error('Error getting tasks:', err);
+    console.error("Error getting tasks:", err);
     res.status(500).json({
       success: false,
-      message: 'Error getting tasks',
-      error: err.message
+      message: "Error getting tasks",
+      error: err.message,
     });
   }
 };
@@ -1547,20 +1599,20 @@ export const getTaskById = async (req, res) => {
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
     res.json({
       success: true,
-      data: task
+      data: task,
     });
   } catch (err) {
-    console.error('Error getting task:', err);
+    console.error("Error getting task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error getting task',
-      error: err.message
+      message: "Error getting task",
+      error: err.message,
     });
   }
 };
@@ -1568,11 +1620,11 @@ export const getTaskById = async (req, res) => {
 export const createTask = async (req, res) => {
   try {
     const { title, description, status, priority } = req.body;
-    
-    if (!title || title.trim() === '') {
+
+    if (!title || title.trim() === "") {
       return res.status(400).json({
         success: false,
-        message: 'Task title is required'
+        message: "Task title is required",
       });
     }
 
@@ -1581,15 +1633,15 @@ export const createTask = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Task created successfully!',
-      data: newTask
+      message: "Task created successfully!",
+      data: newTask,
     });
   } catch (err) {
-    console.error('Error creating task:', err);
+    console.error("Error creating task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error creating task',
-      error: err.message
+      message: "Error creating task",
+      error: err.message,
     });
   }
 };
@@ -1599,12 +1651,17 @@ export const updateTask = async (req, res) => {
     const { id } = req.params;
     const { title, description, status, priority } = req.body;
 
-    const updated = await Task.update(id, { title, description, status, priority });
+    const updated = await Task.update(id, {
+      title,
+      description,
+      status,
+      priority,
+    });
 
     if (!updated) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
@@ -1612,15 +1669,15 @@ export const updateTask = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Task updated successfully!',
-      data: updatedTask
+      message: "Task updated successfully!",
+      data: updatedTask,
     });
   } catch (err) {
-    console.error('Error updating task:', err);
+    console.error("Error updating task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error updating task',
-      error: err.message
+      message: "Error updating task",
+      error: err.message,
     });
   }
 };
@@ -1633,64 +1690,66 @@ export const deleteTask = async (req, res) => {
     if (!deleted) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
 
     res.json({
       success: true,
-      message: 'Task deleted successfully!',
-      data: deleted
+      message: "Task deleted successfully!",
+      data: deleted,
     });
   } catch (err) {
-    console.error('Error deleting task:', err);
+    console.error("Error deleting task:", err);
     res.status(500).json({
       success: false,
-      message: 'Error deleting task',
-      error: err.message
+      message: "Error deleting task",
+      error: err.message,
     });
   }
 };
 ```
 
 #### routes/taskRoutes.js
+
 ```javascript
-import express from 'express';
+import express from "express";
 import {
   getAllTasks,
   getTaskById,
   createTask,
   updateTask,
-  deleteTask
-} from '../controllers/taskController.js';
+  deleteTask,
+} from "../controllers/taskController.js";
 
 const router = express.Router();
 
-router.get('/', getAllTasks);
-router.get('/:id', getTaskById);
-router.post('/', createTask);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.get("/", getAllTasks);
+router.get("/:id", getTaskById);
+router.post("/", createTask);
+router.put("/:id", updateTask);
+router.delete("/:id", deleteTask);
 
 export default router;
 ```
 
 #### middleware/errorHandler.js
+
 ```javascript
 export const notFound = (req, res, next) => {
   res.status(404).json({
     success: false,
-    message: `Route ${req.originalUrl} not found`
+    message: `Route ${req.originalUrl} not found`,
   });
 };
 
 export const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
-  
+
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    message: err.message || "Internal server error",
+    error: process.env.NODE_ENV === "development" ? err.stack : undefined,
   });
 };
 ```
@@ -1702,27 +1761,32 @@ export const errorHandler = (err, req, res, next) => {
 ## שאלות נפוצות
 
 **1. מה ההבדל בין mysql ל-mysql2?**
+
 - `mysql2` מהיר יותר ותומך ב-Promises וב-async/await
 - מומלץ להשתמש ב-`mysql2`
 
 **2. מה ההבדל בין createConnection ל-createPool?**
+
 - `createConnection` - חיבור יחיד, פשוט למתחילים
 - `createPool` - מנהל מספר חיבורים במקביל, יותר יעיל לאפליקציות גדולות
 - למתחילים מומלץ להתחיל עם `createConnection`
 
 **3. מה זה Prepared Statements?**
+
 - שאילתות SQL מאובטחות מפני SQL Injection
 - השתמשו תמיד ב-? ו-array של ערכים
 
 **4. איך לראות את השאילתות ש-MySQL מריץ?**
+
 ```javascript
 // הוסיפו לפני כל query:
-console.log('Running query:', 'SELECT * FROM tasks');
-const [tasks] = await connection.query('SELECT * FROM tasks');
-console.log('Results:', tasks);
+console.log("Running query:", "SELECT * FROM tasks");
+const [tasks] = await connection.query("SELECT * FROM tasks");
+console.log("Results:", tasks);
 ```
 
 **5. איך למחוק את כל הנתונים ולהתחיל מחדש?**
+
 ```sql
 TRUNCATE TABLE tasks;
 ```
