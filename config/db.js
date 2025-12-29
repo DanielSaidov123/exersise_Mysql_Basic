@@ -1,11 +1,12 @@
 import mysql from "mysql2/promise";
+import "dotenv/config"
 
 export async function initDb() {
   const initConnection = await mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "root",
-    port: 3306,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password:  process.env.DB_USER,
+    port: process.env.DB_PORT,
   });
 
   const CREATE_DB_QUERY = `CREATE DATABASE IF NOT EXISTS tasks_db;`;
@@ -36,10 +37,10 @@ export async function getConn() {
   if (conn) return conn;
   else {
     const dbConnection = await mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      port: 3306,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_USER,
+      port:process.env.DB_PORT,
       database: "tasks_db",
     });
     return dbConnection;

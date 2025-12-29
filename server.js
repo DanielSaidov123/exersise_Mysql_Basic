@@ -1,10 +1,12 @@
 import express from "express";
 import task from "./routes/tasks.js";
 import { getConn, initDb } from "./config/db.js";
+import "dotenv/config"
+
 // import { getConn, initDb } from "./utils/db.js";
 
 const app = express();
-const PORT = process.env.PORT || 8001;
+const PORT = process.env.PORT || 8000;
 
 // Body parser
 app.use(express.json());
