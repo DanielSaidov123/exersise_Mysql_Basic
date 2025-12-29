@@ -1,6 +1,7 @@
 import express from "express";
-import { getConn, initDb } from "./utils/db.js";
-import tasks from "./routes/tasks.js";
+import task from "./routes/tasks.js";
+import { getConn, initDb } from "./config/db.js";
+// import { getConn, initDb } from "./utils/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 8001;
@@ -35,7 +36,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/tasks", tasks);
+app.use("/tasks", task);
 
 app.listen(PORT, async () => {
   await initDb();
