@@ -23,7 +23,7 @@ const QueryGetByID = async (req, id) => {
   return task[0];
 };
 
-const QueryUpdate = async (req, taskObj, taskData,id) => {
+const QueryUpdate = async (req, taskObj, taskData, id) => {
   await req.dbConn.query(
     `UPDATE tasks SET  title = ?, description = ?, status = ?, priority = ? WHERE id = ?`,
     [
@@ -38,9 +38,14 @@ const QueryUpdate = async (req, taskObj, taskData,id) => {
   );
 };
 
+const QueryDelete = async (req, id) => {
+  await req.dbConn.query(`DELETE FROM tasks WHERE id=?`, id);
+};
+
 export default {
   QueryGetAll,
   QueryCreateAll,
   QueryGetByID,
   QueryUpdate,
+  QueryDelete,
 };

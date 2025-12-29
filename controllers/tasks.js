@@ -37,10 +37,10 @@ export const GetByID = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await Task.QueryGetByID(req, id);
-    if(!task){
-        res.status(404).json({err:'id is ot dfind'});
-        return
-     };
+    if (!task) {
+      res.status(404).json({ err: "id is ot dfind" });
+      return;
+    }
     res.status(201).json({ data: task });
   } catch (err) {
     res.status(500).json({ rror: err.message });
@@ -52,14 +52,35 @@ export const UpdateTasks = async (req, res) => {
     const { id } = req.params;
     const { title, description, status, priority } = req.body;
     const task = await Task.QueryGetByID(req, id);
-    if(!task){
-        res.status(404).json({err:'id is not defind'});
-        return
-     };
-    await Task.QueryUpdate(req,task,{ title, description, status, priority },id)
+    if (!task) {
+      res.status(404).json({ err: "id is not defind" });
+      return;
+    }
+    await Task.QueryUpdate(
+      req,
+      task,
+      { title, description, status, priority },
+      id
+    );
     const taskID = await Task.QueryGetByID(req, id);
     res.status(201).json({ data: taskID });
   } catch (err) {
-    res.status(500).json({ rror: err.message });
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const DeleteTaskById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.QueryGetByID(req, id);
+    
+    if (!task) {
+      res.status(404).json({ err: "id is not defind" });
+      return;
+    }
+    await Task.QueryDelete(req, id);
+    res.status(201).json({ data:`id: ${id} deleted`});
+  } catch (error) {
+    res.status(500).json({ error: err.message });
   }
 };
