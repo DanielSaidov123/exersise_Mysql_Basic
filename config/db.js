@@ -5,7 +5,7 @@ export async function initDb() {
   const initConnection = await mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password:  process.env.DB_USER,
+    password:  process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
   });
 
@@ -39,7 +39,7 @@ export async function getConn() {
     const dbConnection = await mysql.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
-      password: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
       port:process.env.DB_PORT,
       database: "tasks_db",
     });
